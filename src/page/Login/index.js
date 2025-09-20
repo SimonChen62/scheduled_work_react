@@ -1,17 +1,9 @@
-import { useParams , useSearchParams , useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import React from "react"
-import {Card, Form, Input, Button, message} from 'antd'
-import axios from "axios"
-import request from '@/utils/request' // 路径根据你的文件位置调整
-
+import {Card, Form, Input, Button} from 'antd'
+import request from '@/utils/request'
 
 const Login = () => {
-
-    //const [params] = useSearchParams()
-    //const id = params.get('id')
-
-    //const params = useParams()
-    //const id = params.id
     const navigate = useNavigate()
     const rules = {
         username: [
@@ -30,7 +22,8 @@ const Login = () => {
             
             // 登录成功提示
             alert('login successfully')
-            //settingStorage.setItem('user', JSON.stringify(response.data.user))
+            // 保存用户信息到本地存储
+            localStorage.setItem('user', JSON.stringify(response.data.user))
             navigate('/dashboard') // 登录成功后跳转到主页
         } catch (error) {
             // 登录失败提示
@@ -42,22 +35,29 @@ const Login = () => {
         }
     }
     return (
-        <div >
-            <Card  title="Login Page">
-                <Form onFinish={onFinish}>
-                    <Form.Item rules={rules.username} name="username">
-                        <Input placeholder="Enter your username"  />
-                    </Form.Item>
-                    <Form.Item rules={rules.password} name="password" >
-                        <Input placeholder="Enter your password" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">Login</Button>
-                    </Form.Item>
-                </Form>
-            </Card>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#f0f2f5' }}>
+            <div style={{ width: '400px' }}>
+                <Card title="Login Page" style={{ textAlign: 'center' }}>
+                    <Form onFinish={onFinish}>
+                        <Form.Item rules={rules.username} name="username">
+                            <Input placeholder="Enter your username" />
+                        </Form.Item>
+                        <Form.Item rules={rules.password} name="password">
+                            <Input.Password placeholder="Enter your password" />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" block>Login</Button>
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="link" onClick={() => navigate('/register')} block>
+                                No account? Register now
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Card>
+            </div>
         </div>
     )
-    }
+}
 
 export default Login

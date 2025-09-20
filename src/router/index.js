@@ -7,25 +7,29 @@ import ProtectedRoute from '@/components/ProtectedRoute'
 import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
-    {   
+    {
         path: '/',
-        element: <Layout />,
+        element: <Login />
+    },
+    {
+        path: '/login',
+        element: <Login />
+    },
+    {
+        path: '/register',
+        element: <Register />
+    },
+    {
+        path: '/',
+        element: (
+            <ProtectedRoute>
+                <Layout />
+            </ProtectedRoute>
+        ),
         children: [
             {
-                path: '/login',
-                element: <Login />
-            },
-            {
-                path: '/register',
-                element: <Register />
-            },
-            {
                 path: '/dashboard',
-                element: (
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                )
+                element: <Dashboard />
             }
         ]
     }

@@ -1,29 +1,18 @@
 // src/components/ProtectedRoute.js
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import request from '@/utils/request';
 
 const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await request.get('/'); // 或者其他需要验证的端点
-        setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <div>检查登录状态中...</div>; // 加载中状态
-  }
-
-  return isAuthenticated ? children : <Navigate to="/login" />;
+    // 检查用户是否已登录（基于localStorage中的用户信息）
+    const isAuthenticated = localStorage.getItem('user') || sessionStorage.getItem('user');
+    
+    // 如果用户未认证，重定向到登录页面
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+    
+    // 如果用户已认证，渲染子组件
+    return children;
 };
 
 export default ProtectedRoute;
